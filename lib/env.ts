@@ -1,15 +1,14 @@
 /**
- * The only place that reads environment variables. Next.js inlines
- * NEXT_PUBLIC_* values at build time, so these must be referenced literally.
- * Never add non-public (secret) values here: this module ships to the browser.
+ * The only place that reads public environment variables.
+ * Never add service-role keys or other secrets to this module.
  */
-
-const DEFAULT_API_URL = "http://localhost:8000/api/v1";
+const DEFAULT_API_URL = "http://localhost:3001/api/v1";
 
 export const env = {
-  /** FastAPI base URL including /api/v1, without trailing slash. May be relative ("/api/v1"). */
+  /** Express API base URL including /api/v1, without a trailing slash. */
   apiUrl: (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL).replace(/\/+$/, ""),
-  /** Serve API calls from lib/mocks instead of the network (UI development). */
+  supabaseUrl: (process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/+$/, ""),
+  supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
   useMocks: process.env.NEXT_PUBLIC_USE_MOCKS === "true",
   basePath: process.env.NEXT_PUBLIC_BASE_PATH?.replace(/\/+$/, "") ?? "",
   isProduction: process.env.NODE_ENV === "production",
